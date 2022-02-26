@@ -4,32 +4,8 @@ Entete à compléter
 """
 
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
-#import pandas as pd
-import re
-
-"""def is_hospital_entry (table_row) :
-    Fonction qui permet de déterminer si une ligne de la table HTML
-    que nous allons récupérer est bien un hopital
-    row_cells = table_row.findAll("a")
-    hospital_name = get_hospital_name(row_cells[0].text)
-    return (hospital_name)
-
-def get_hostipal_name (cell_value) :
-    r = re.match("^[a-zA-Z.-.(.)]*(AP.-HP)[a-zA-Z.-.(.)]*]$", cell_value)
-    if r :
-        hospital_name = r.group(1)
-        return hospital_name
-    else:
-        return None
-    
-    
-def get_hospital_adress (cell_value) :
-    if cell_value[0] == "Adresse :" :
-        return cell_value[1]
-    else : return None
-"""
-
+#from bs4 import BeautifulSoup
+import bs4
 
 def liste_choisie (liste, chaine):
     """Prend une liste en entrée et ne garde que les éléments qui correspondent à l'information voulue"""
@@ -44,16 +20,46 @@ def liste_choisie (liste, chaine):
 
 
 def get_all_hospital (html_soup) :
-    
+
+    ul_tag = html_soup.find_all(id = 'section_31')
+    li_tag = []
+
+    for i in ul_tag :
+      for child in i.descendants :
+        if type(child) == bs4.element.NavigableString :
+          li_tag.append(child)
+
+    list_attributs = []
+    for i in li_tag :
+      if i != '\n':
+        list_attributs.append(i)
+
+    tel = []
+    ad = []
+    cap = []
+    type_struct = []
+  
+    for i in range(len(list_attributs)) :
+        if list_attributs[i] == 'Téléphone :' :
+            tel.append(list_attributs[i+1])
+        elif list_attributs[i] == 'Adresse :' :
+            ad.append(list_attributs[i+1])
+        elif list_attributs[i] == 'Capacité :' : 
+            cap.append(list_attributs[i+1])
+        elif list_attributs[i] == 'Type de structure :' : 
+            type_struct.append(list_attributs[i+1])
+
+
     hospital = []
     all_h3_in_html_page = html_soup.findAll("h3")
-    all_li_in_html_page = html_soup.findAll("li")
-    adress = liste_choisie(all_li_in_html_page, 'label')
 
     for i in range (len(all_h3_in_html_page)) :
         hospital_entry = {
             "name" : all_h3_in_html_page[i].text,
-            "Adress" : adress[i].text
+            "telephone" : tel[i],
+            "adress" : ad[i],
+            "capacite" : cap[i],
+            "type" : type_struct[i]
         }
         hospital.append(hospital_entry)
     return hospital
@@ -64,16 +70,20 @@ def get_all_hospital (html_soup) :
 if __name__ == '__main__' :
     
     html = urlopen("https://www.hopital.fr/annuaire/Haute-Savoie+Rh%C3%B4ne-Alpes+74/")
-    html_soup = BeautifulSoup(html, 'html.parser')
-    """hospital_list = get_all_hospital(html_soup)
+    html_soup = bs4.BeautifulSoup(html, 'html.parser')
+    hospital_list = get_all_hospital(html_soup)
     print(hospital_list)
-    print(len(hospital_list))"""
-    
+    #print(len(hospital_list))
+    """
     all_li_in_html_page = html_soup.findAll("li")
     print(all_li_in_html_page[-1])
 
     print(liste_choisie(all_li_in_html_page, 'Adresse :'))
+    print(html_soup.get_text())
+    print(html_soup.find('class="label"'))
+    """
+
 
     
-    
 
+    
