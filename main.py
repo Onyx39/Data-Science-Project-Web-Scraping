@@ -2,7 +2,7 @@
 from urllib.request import urlopen
 #from bs4 import BeautifulSoup
 import bs4
-import WebScraping-Hopitaux.py import get_all_hospital 
+from WebScraping-Hopitaux import get_all_hospital()
 
 
 html = urlopen("https://www.hopital.fr/annuaire-des-activites")

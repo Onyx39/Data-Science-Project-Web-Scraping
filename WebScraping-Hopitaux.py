@@ -3,8 +3,7 @@
 Entete à compléter
 """
 
-from urllib.request import urlopen
-#from bs4 import BeautifulSoup
+import urllib.request 
 import bs4
 
 def liste_choisie (liste, chaine):
@@ -67,13 +66,13 @@ def get_all_hospital (html_soup) :
 
 
 if __name__ == '__main__' :
-    
+    """
     html = urlopen("https://www.hopital.fr/annuaire/Haute-Savoie+Rh%C3%B4ne-Alpes+74/")
     html_soup = bs4.BeautifulSoup(html, 'html.parser')
     hospital_list = get_all_hospital(html_soup)
     print(hospital_list)
     #print(len(hospital_list))
-    """
+    
     all_li_in_html_page = html_soup.findAll("li")
     print(all_li_in_html_page[-1])
 
@@ -81,6 +80,27 @@ if __name__ == '__main__' :
     print(html_soup.get_text())
     print(html_soup.find('class="label"'))
     """
+
+    html = urllib.request.urlopen("https://www.hopital.fr/annuaire-des-activites")
+    html_soup = bs4.BeautifulSoup(html, 'html.parser')
+    colonne_droite = html_soup.find("aside", {"class" : "col sidebar small"})
+    options_departement = colonne_droite.find("ul")
+
+    l = []
+    for liens in options_departement.find_all("a") : 
+        l.append(liens.get('href'))
+
+
+    liste_hopitaux = []
+
+    for i in l :
+        lien_dep = "https://www.hopital.fr" + i + '/'
+        urllib.parse.urlencode(lien_dep) 
+        departement = urllib.request.urlopen(lien_dep)
+        departement_soup = bs4.BeautifulSoup(html, 'html.parser')
+        liste_hopitaux.append(get_all_hospital())
+
+    print(l)
 
 
     
