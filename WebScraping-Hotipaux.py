@@ -24,6 +24,9 @@ def get_all_hospital (html_soup) :
     ul_tag = html_soup.find_all(id = 'section_31')
     li_tag = []
 
+    hospital = []
+    all_h3_in_html_page = html_soup.findAll("h3")
+
     for i in ul_tag :
       for child in i.descendants :
         if type(child) == bs4.element.NavigableString :
@@ -48,10 +51,6 @@ def get_all_hospital (html_soup) :
             cap.append(list_attributs[i+1])
         elif list_attributs[i] == 'Type de structure :' : 
             type_struct.append(list_attributs[i+1])
-
-
-    hospital = []
-    all_h3_in_html_page = html_soup.findAll("h3")
 
     for i in range (len(all_h3_in_html_page)) :
         hospital_entry = {
