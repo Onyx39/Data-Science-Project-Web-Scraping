@@ -6,6 +6,18 @@ Entete à compléter
 import urllib.request 
 import bs4
 
+def liste_choisie (liste, chaine):
+    """Prend une liste en entrée et ne garde que les éléments qui correspondent à l'information voulue"""
+    l =[]
+    #long_chaine = len(chaine)
+    for i in range (len(liste)) :
+        if liste[i] == chaine :
+            print(liste[i].find('label').contents)
+            l.append(liste[i])
+    return l
+
+
+
 def get_all_hospital (html_soup) :
 
     ul_tag = html_soup.find_all(id = 'section_31')
