@@ -1,79 +1,99 @@
-# -*- coding: utf-8 -*-
-"""
-Entete à compléter
-"""
+import urllib.request 
+import bs4
+import pandas as pd
 
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-#import pandas as pd
-import re
-
-"""def is_hospital_entry (table_row) :
-    Fonction qui permet de déterminer si une ligne de la table HTML
-    que nous allons récupérer est bien un hopital
-    row_cells = table_row.findAll("a")
-    hospital_name = get_hospital_name(row_cells[0].text)
-    return (hospital_name)
-
-def get_hostipal_name (cell_value) :
-    r = re.match("^[a-zA-Z.-.(.)]*(AP.-HP)[a-zA-Z.-.(.)]*]$", cell_value)
-    if r :
-        hospital_name = r.group(1)
-        return hospital_name
-    else:
-        return None
-    
-    
-def get_hospital_adress (cell_value) :
-    if cell_value[0] == "Adresse :" :
-        return cell_value[1]
-    else : return None
-"""
-
-
-def liste_choisie (liste, chaine):
-    """Prend une liste en entrée et ne garde que les éléments qui correspondent à l'information voulue"""
-    l =[]
-    #long_chaine = len(chaine)
-    for i in range (len(liste)) :
-        if liste[i] == chaine :
-            print(liste[i].find('label').contents)
-            l.append(liste[i])
-    return l
-
+def trouver_liste_nombre_dans_string(s) :
+    candidat = ""
+    for i in range (0, len(s) - 5) :
+        a = 0
+        for j in range(0, 5) :
+            if s[i+j] == '0' or s[i+j] == '1' or s[i+j] == '2' or s[i+j] == '3' or s[i+j] == '4' or s[i+j] == '5' or s[i+j] == '6' or s[i+j] == '7' or s[i+j] == '8' or s[i+j] == '9' :
+                a+=1  
+        if a == 5 :
+            candidat = s[i] + s[i+1] + s[i+2] + s[i+3] + s[i+4]
+    if candidat != "" :
+        return candidat
+    else :
+        for i in range (0, len(s) - 5) :
+            a = 0
+            for j in range(0, 5) :
+                if s[i+j] == '0' or s[i+j] == '1' or s[i+j] == '2' or s[i+j] == '3' or s[i+j] == '4' or s[i+j] == '5' or s[i+j] == '6' or s[i+j] == '7' or s[i+j] == '8' or s[i+j] == '9' or s[i+j] == ' ':
+                    a+=1  
+            if a == 5 :
+                candidat = s[i] + s[i+1] + s[i+2] + s[i+3] + s[i+4]
+        return candidat
 
 
 def get_all_hospital (html_soup) :
-    
-    hospital = []
-    all_h3_in_html_page = html_soup.findAll("h3")
-    all_li_in_html_page = html_soup.findAll("li")
-    adress = liste_choisie(all_li_in_html_page, 'label')
+    """Fonction qui recupère les donées des hopitaux présents sur une page web"""
+
+    ul_tag = html_soup.find_all(id = 'section_31')
+    li_tag = []
+@@ -36,28 +48,57 @@ def get_all_hospital (html_soup) :
+      if i != '\n':
+        list_attributs.append(i)
+
+    ville = []
+    for i in all_h3_in_html_page :
+        ville_courante = ""
+        debut = i.text.rindex('(')
+        fin = i.text.rindex(')')
+        if i.text[debut+1] == "7" :
+            debut = i.text.find('(')
+            fin = i.text.rindex('(')
+        for j in range(debut +1, fin) :
+            ville_courante += i.text[j]
+        ville.append(ville_courante)
+
+
+    tel = []
+    ad = []
+    cap = []
+    type_struct = []
+
+    for i in range(len(list_attributs)) :
+        if list_attributs[i] == 'Téléphone :' :
+            if list_attributs[i+1] != 'Site internet :' :
+                tel.append(list_attributs[i+1])
+            else : tel.append('Pas de numéro')
+
+        elif list_attributs[i] == 'Adresse :' :
+            ad.append(list_attributs[i+1])
+
+        elif list_attributs[i] == 'Capacité :' : 
+            cap.append(list_attributs[i+1])
+        elif list_attributs[i] == 'Type de structure :' : 
+            type_struct.append(list_attributs[i+1])
+
+    departement = []
+    for i in ad :
+        cp = trouver_liste_nombre_dans_string(i)
+        if cp != "" :
+            if cp[0] == '9' and cp[1] == '7' :
+                departement.append(cp[0] + cp[1] + cp[2])
+            else : departement.append(cp[0] + cp[1])
+        else : departement.append("Pas de departement")
+
 
     for i in range (len(all_h3_in_html_page)) :
         hospital_entry = {
-            "name" : all_h3_in_html_page[i].text,
-            "Adress" : adress[i].text
+            "Nom" : all_h3_in_html_page[i].text,
+            "Téléphone" : tel[i],
+            "Adresse" : ad[i],
+            "Ville" : ville[i],
+            "Département" : departement[i],
+            "Capacité" : cap[i],
+            "Type d'établissement" : type_struct[i]
         }
         hospital.append(hospital_entry)
     return hospital
+@@ -83,9 +124,13 @@ def get_all_hospital (html_soup) :
+        lien_dep = "https://www.hopital.fr" + i + '/'
+        departement = urllib.request.urlopen(urllib.request.quote(lien_dep, safe=':/'))
+        departement_soup = bs4.BeautifulSoup(departement, 'html.parser')
+        liste_hopitaux += get_all_hospital(departement_soup)
 
-
-
-
-if __name__ == '__main__' :
-    
-    html = urlopen("https://www.hopital.fr/annuaire/Haute-Savoie+Rh%C3%B4ne-Alpes+74/")
-    html_soup = BeautifulSoup(html, 'html.parser')
-    """hospital_list = get_all_hospital(html_soup)
-    print(hospital_list)
-    print(len(hospital_list))"""
-    
-    all_li_in_html_page = html_soup.findAll("li")
-    print(all_li_in_html_page[-1])
-
-    print(liste_choisie(all_li_in_html_page, 'Adresse :'))
-
-    
-    
-
+    #print(liste_hopitaux)
+    res = pd.DataFrame(liste_hopitaux)
+    print(res)
+    res.to_csv(r'C:/Users/val_p/Desktop/onzième_essai_hopitaux.csv')
