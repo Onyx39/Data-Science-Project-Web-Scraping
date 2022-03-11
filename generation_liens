@@ -1,0 +1,5 @@
+"""
+Ce fichier génére tous les liens nécéssaire au bon fonctionnement du programe
+"""
+
+print("Hello world !")
