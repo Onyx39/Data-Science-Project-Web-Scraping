@@ -1,0 +1,4 @@
+"""
+Ce fichier permet de récupérer toutes informations utiles pour la construction de la base de données
+"""
+print("Hello World !")
