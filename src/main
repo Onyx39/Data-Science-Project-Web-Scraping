@@ -1,5 +1,0 @@
-"""
-This is the file to execute, it creates the data base
-"""
-
-print( "Hello wolrd !")
