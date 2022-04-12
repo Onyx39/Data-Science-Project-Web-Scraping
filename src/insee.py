@@ -3,6 +3,7 @@ import requests
 from api_insee import ApiInsee
 import time
 from bs4 import BeautifulSoup
+import pandas as pd
 
 api=ApiInsee(
     key="fWquistMMY4cCzPny5ik4ALnWZIa",
@@ -24,7 +25,7 @@ def create_dep_list () :
         deplist.append(str(i))
     return deplist
 
-print(create_dep_list())
+#print(create_dep_list())
 
 def create_dic_pop () :
     tot_pop = 0
@@ -45,13 +46,17 @@ def create_dic_pop () :
         dictionary[i] = total_pop
         #print(i, total_pop)
         time.sleep(2)
-    print(dictionary)
-        
-    print("La population totale de France est de : ",tot_pop, "habitants")
-    print("Il y a ", len(dictionary), "départements")
+    return dictionary
+    #print(dictionary)   
+    #print("La population totale de France est de : ",tot_pop, "habitants")
+    #print("Il y a", len(dictionary), "départements")
 
 
+def create_csv_file () :
+    dictionary = create_dic_pop()
+    res = pd.DataFrame([dictionary])
+    res.to_csv(r'C:/Users/takahasv/Bureau/PROJ632/bigData')
 
 
 if __name__ == "__main__" :
-    create_dic_pop()
+    create_csv_file()
