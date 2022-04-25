@@ -8,7 +8,6 @@ import time
 
 mon_api = api
 
-
 def create_dep_list () :
     deplist = []
     for i in range (1, 10) :
@@ -43,38 +42,41 @@ def create_dic_pop () :
         dictionary['departement'] = i
 
         total_pop_dep=int(var[0].contents[0])
-        dictionary['total_pop'] = total_pop_dep
+        dictionary['Population totale département'] = total_pop_dep
 
         total_pop_hommes = float(var[1].contents[0])
-        dictionary['total_pop_hommes'] = total_pop_hommes
+        dictionary['Population hommes département'] = total_pop_hommes
 
         total_pop_femmes = float(var[2].contents[0])
-        dictionary['total_pop_femmes'] = total_pop_femmes
+        dictionary['Population femmes département'] = total_pop_femmes
 
         total_pop_0_14 = float(var[3].contents[0])
-        dictionary['total_pop_0_14'] = total_pop_0_14
+        dictionary['Population entre 0 et 14 ans'] = total_pop_0_14
 
         total_pop_15_29 = float(var[6].contents[0])
-        dictionary['total_pop_15_29'] = total_pop_15_29
+        dictionary['Population entre 15 et 29 ans'] = total_pop_15_29
 
         total_pop_30_44 = float(var[9].contents[0])
-        dictionary['total_pop_30_44'] = total_pop_30_44
+        dictionary['Population entre 30 et 44 ans'] = total_pop_30_44
 
         total_pop_45_59 = float(var[12].contents[0])
-        dictionary['total_pop_45_59'] = total_pop_45_59
+        dictionary['Population entre 45 et 59 ans'] = total_pop_45_59
 
         total_pop_60_74 = float(var[15].contents[0])
-        dictionary['total_pop_60_74'] = total_pop_60_74
+        dictionary['Population entre 60 et 74 ans'] = total_pop_60_74
 
         total_pop_75_89 = float(var[18].contents[0])
-        dictionary['total_pop_75_89'] = total_pop_75_89
+        dictionary['Population entre 74 et 89 ans'] = total_pop_75_89
 
         total_pop_90_plus = float(var[21].contents[0])
-        dictionary['total_pop_90_plus'] = total_pop_90_plus
+        dictionary['Population de 90 ans et plus'] = total_pop_90_plus
         
+        """
         print(i)
         print(dictionary)
         print(" ")
+        """
+        
         liste.append(dictionary)
         time.sleep(4)
     return liste

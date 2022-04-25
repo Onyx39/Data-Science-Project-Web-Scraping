@@ -6,7 +6,7 @@ import pandas as pd
 
 def save_as_CSV_file () :
     res = pd.DataFrame(get_all_hospital())
-    res.to_csv(r'path')
+    res.to_csv(path)
 
 if __name__ == "__main__" :
     save_as_CSV_file()
