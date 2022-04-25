@@ -1,11 +1,13 @@
 #Ce fichier utilise l'API de l'INSEE pour récupérer la populaton dans chaque départemet français
 
+from numpy import around
 from fichier_a_completer import *
 from bs4 import BeautifulSoup
 import requests
 import time
 
 mon_api = api
+
 
 def create_dep_list () :
     deplist = []
@@ -23,11 +25,12 @@ def create_dep_list () :
     return deplist
 
 
+
 def create_dic_pop () :
-    tot_pop = 0
-    dictionary = {}
+    liste = []
     deplist = create_dep_list()
     for i in deplist :
+        dictionary = {}
         endpoint = "https://api.insee.fr/donnees-locales/V0.1/donnees/geo-SEXE-AGE15_15_90@GEO2021RP2018/DEP-"+i+".all.all"
         data = {"ip": "1.1.2.3"}
         headers = {"Authorization": "Bearer " + bearer}
@@ -35,11 +38,43 @@ def create_dic_pop () :
         reponse=requests.get(endpoint, data=data, headers=headers)
         s = reponse.content.decode('utf-8')
         beautiful_s = BeautifulSoup(s, "html.parser")
+        var=beautiful_s.find_all('valeur')
+
+        dictionary['departement'] = i
+
+        total_pop_dep=int(var[0].contents[0])
+        dictionary['total_pop'] = total_pop_dep
+
+        total_pop_hommes = float(var[1].contents[0])
+        dictionary['total_pop_hommes'] = total_pop_hommes
+
+        total_pop_femmes = float(var[2].contents[0])
+        dictionary['total_pop_femmes'] = total_pop_femmes
+
+        total_pop_0_14 = float(var[3].contents[0])
+        dictionary['total_pop_0_14'] = total_pop_0_14
+
+        total_pop_15_29 = float(var[6].contents[0])
+        dictionary['total_pop_15_29'] = total_pop_15_29
+
+        total_pop_30_44 = float(var[9].contents[0])
+        dictionary['total_pop_30_44'] = total_pop_30_44
+
+        total_pop_45_59 = float(var[12].contents[0])
+        dictionary['total_pop_45_59'] = total_pop_45_59
+
+        total_pop_60_74 = float(var[15].contents[0])
+        dictionary['total_pop_60_74'] = total_pop_60_74
+
+        total_pop_75_89 = float(var[18].contents[0])
+        dictionary['total_pop_75_89'] = total_pop_75_89
+
+        total_pop_90_plus = float(var[21].contents[0])
+        dictionary['total_pop_90_plus'] = total_pop_90_plus
         
-        var=beautiful_s.find('valeur')
-        total_pop=int(var.contents[0])
-        tot_pop+=total_pop
-        dictionary[i] = total_pop
-        print(i, total_pop)
-        time.sleep(2)
-    return dictionary
+        print(i)
+        print(dictionary)
+        print(" ")
+        liste.append(dictionary)
+        time.sleep(4)
+    return liste

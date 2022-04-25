@@ -7,5 +7,5 @@ import pandas as pd
 
 def create_csv_file () :
     dictionary = create_dic_pop()
-    res = pd.DataFrame([dictionary])
-    res.to_csv(r'insee_path_file')
+    res = pd.DataFrame.from_dict(dictionary)
+    res.to_csv(r'C:/Users/val_p/Desktop/test2.csv')
