@@ -139,7 +139,6 @@ def nombre_equipements_d_un_hop(lien_hopital) :
             elif nom_equipement == 4 :
                 liste[4] = nombre
             else : liste[5] = nombre
-            print(liste)
     return liste
 
 def recuperer_nom_equipements (s) :
