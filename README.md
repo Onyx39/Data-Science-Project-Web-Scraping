@@ -1,4 +1,4 @@
-# Data-Science-Project-proj632
+# Projet-Data-Science-Hopitaux
 Ceci est notre projet de 'Data Science' en tant qu'étudiant à l'école Polytech Annecy.
 
 Le but de ce projet est de collecter les données concernant tous les hôpitaux de France ainsi que quelques données sur la répartition de la popualation française dans le but de répartir correctement les ressources de santé sur le territoire.
