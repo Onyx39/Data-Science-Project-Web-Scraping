@@ -1,9 +1,12 @@
 # Data-Science-Project-proj632
-This is our project of data science (web scraping) as student in Polytech Annecy Chambéry.
+Ceci est notre projet de 'Data Science' en tant qu'étudiant à l'école Polytech Annecy.
 
-The goal is to collect all french health facilities in order to improve their efficiency on the territory.
+Le but de ce projet est de collecter les données concernant tous les hôpitaux de France ainsi que quelques données sur la répartition de la popualation française dans le but de répartir correctement les ressources de santé sur le territoire.
 
-# Results
-This code creates two CSV files with the list of the french health facilities and the population by frech department.
-Do not forget to fill the 'fichier_a_completer' and adapt the patsh and the api rights to your own machine.
-Then you can read the CVS files with Excel for example.
+
+# Résultats
+Ce code créé deux fichiers CSV, le premier avec la liste des hôpitaux sur tout le territoire français triée par département, le second avec des informations sur la population de chaque département.
+
+N'oubliez pas de remplir de fichier 'fichier_a_completer' si vous souhaitez faire tourner ce programme sur votre machine. Il vous faudra aussi un accès à l'api 'Données Locales' de l'INSEE.
+
+Le programme mets environ 2h pour s'exécuter totalement.
