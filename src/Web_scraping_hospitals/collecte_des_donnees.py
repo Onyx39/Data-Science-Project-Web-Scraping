@@ -34,7 +34,7 @@ def creer_un_dictionnaire_hopital (h3_html_soup, tel, ad, ville, departement, ca
             "Equipement : tep (tomographe)" : equipements[i][5]
         }
         hopital.append(hospital_entry)
-        print(hospital_entry)
+        #print(hospital_entry)
     return hopital
 
 

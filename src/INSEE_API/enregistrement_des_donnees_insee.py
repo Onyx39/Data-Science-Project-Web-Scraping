@@ -1,6 +1,6 @@
 #Ce fichier enregistre les données collectées grâce à l'api de l'INSEE
 
-from INSEE_API.collecte_des_donnees_insee import *
+from Insee_api.collecte_des_donnees_insee import *
 from fichier_a_completer import *
 import pandas as pd
 
