@@ -1,11 +1,11 @@
 #Ce fichier utilise l'API de l'INSEE pour récupérer la populaton dans chaque départemet français
 
-import fichier_a_completer as d
+from fichier_a_completer import *
 from bs4 import BeautifulSoup
 import requests
 import time
 
-api = d.api
+mon_api = api
 
 def create_dep_list () :
     deplist = []
@@ -30,7 +30,7 @@ def create_dic_pop () :
     for i in deplist :
         endpoint = "https://api.insee.fr/donnees-locales/V0.1/donnees/geo-SEXE-AGE15_15_90@GEO2021RP2018/DEP-"+i+".all.all"
         data = {"ip": "1.1.2.3"}
-        headers = {"Authorization": "Bearer " + d.bearer}
+        headers = {"Authorization": "Bearer " + bearer}
 
         reponse=requests.get(endpoint, data=data, headers=headers)
         s = reponse.content.decode('utf-8')
@@ -40,6 +40,6 @@ def create_dic_pop () :
         total_pop=int(var.contents[0])
         tot_pop+=total_pop
         dictionary[i] = total_pop
-        #print(i, total_pop)
+        print(i, total_pop)
         time.sleep(2)
     return dictionary

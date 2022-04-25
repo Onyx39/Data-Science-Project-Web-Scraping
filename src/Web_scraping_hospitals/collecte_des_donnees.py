@@ -1,6 +1,6 @@
 #Ce fichier collecte les données et les stocke dans un dictionnaire
 
-import fonctions_pour_le_traitement_des_donnees as f
+from Web_scraping_hospitals.fonctions_pour_le_traitement_des_donnees import *
 import urllib.request 
 import bs4
 
@@ -41,13 +41,13 @@ def creer_un_dictionnaire_hopital (h3_html_soup, tel, ad, ville, departement, ca
 
 def get_one_hospital (html_soup) :
     """Fonction qui recupère les données des hopitaux présents sur une page web"""
-    liens = f.creer_liste_lien_hopitaux(html_soup)
+    liens = creer_liste_lien_hopitaux(html_soup)
     cap_spe=[]
     equipements = []
     for i in liens :
         lien_description_hop = "https://www.hopital.fr" + i 
-        cap_spe.append(f.capacites_des_spe_d_un_hop(lien_description_hop))
-        equipements.append(f.nombre_equipements_d_un_hop(lien_description_hop))
+        cap_spe.append(capacites_des_spe_d_un_hop(lien_description_hop))
+        equipements.append(nombre_equipements_d_un_hop(lien_description_hop))
 
     ul_tag = html_soup.find_all(id = 'section_31')
     li_tag = []
@@ -63,11 +63,11 @@ def get_one_hospital (html_soup) :
       if i != '\n':
         list_attributs.append(i)
 
-    ville = f.creer_liste_ville(all_h3_in_html_page)
+    ville = creer_liste_ville(all_h3_in_html_page)
 
-    tel, ad, cap, type_struct = f.creer_liste_telephone_adresse_capacite_type(list_attributs)
+    tel, ad, cap, type_struct = creer_liste_telephone_adresse_capacite_type(list_attributs)
 
-    departement = f.creer_liste_numero_depatement(ad)
+    departement = creer_liste_numero_depatement(ad)
 
     return creer_un_dictionnaire_hopital(all_h3_in_html_page, tel, ad, ville, departement, cap, type_struct, cap_spe, equipements)
 
