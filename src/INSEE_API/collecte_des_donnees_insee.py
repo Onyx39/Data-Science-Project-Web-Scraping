@@ -1,14 +1,11 @@
-import urllib.request
-import requests
-from api_insee import ApiInsee
-import time
-from bs4 import BeautifulSoup
-import pandas as pd
+#Ce fichier utilise l'API de l'INSEE pour récupérer la populaton dans chaque départemet français
 
-api=ApiInsee(
-    key="fWquistMMY4cCzPny5ik4ALnWZIa",
-    secret="DcZXS9pINVftzS3OE0PQ8dzAjHQa"
-)
+from fichier_a_completer import *
+from bs4 import BeautifulSoup
+import requests
+import time
+
+mon_api = api
 
 def create_dep_list () :
     deplist = []
@@ -25,7 +22,6 @@ def create_dep_list () :
         deplist.append(str(i))
     return deplist
 
-#print(create_dep_list())
 
 def create_dic_pop () :
     tot_pop = 0
@@ -34,7 +30,7 @@ def create_dic_pop () :
     for i in deplist :
         endpoint = "https://api.insee.fr/donnees-locales/V0.1/donnees/geo-SEXE-AGE15_15_90@GEO2021RP2018/DEP-"+i+".all.all"
         data = {"ip": "1.1.2.3"}
-        headers = {"Authorization": "Bearer e60bbcb3-3ea8-36ad-aaa8-0553307b6876"}
+        headers = {"Authorization": "Bearer " + bearer}
 
         reponse=requests.get(endpoint, data=data, headers=headers)
         s = reponse.content.decode('utf-8')
@@ -44,19 +40,6 @@ def create_dic_pop () :
         total_pop=int(var.contents[0])
         tot_pop+=total_pop
         dictionary[i] = total_pop
-        #print(i, total_pop)
+        print(i, total_pop)
         time.sleep(2)
     return dictionary
-    #print(dictionary)   
-    #print("La population totale de France est de : ",tot_pop, "habitants")
-    #print("Il y a", len(dictionary), "départements")
-
-
-def create_csv_file () :
-    dictionary = create_dic_pop()
-    res = pd.DataFrame([dictionary])
-    res.to_csv(r'C:/Users/takahasv/Bureau/PROJ632/bigData')
-
-
-if __name__ == "__main__" :
-    create_csv_file()
